@@ -8,7 +8,7 @@ import Repeat from '../../helper/util/repeatFunc'
 
 export default function Home() {
   const aspect = window.innerWidth / window.innerHeight
-  const [count, setCount] = useState(32)
+  const [count, setCount] = useState(14)
   const [route, setRoute] = useState('')
   const [isActive, setIsActive] = useState(false)
 

@@ -17,7 +17,6 @@ export default function Building({ count }) {
   const buildref = useRef()
   const { nodes } = useGLTF(Build3D)
   console.log(nodes)
-
   // const data = useMemo(
   //   () => ({
   //     uniforms: { uHeight: { type: 'f', value: 0.0 } },
@@ -39,33 +38,467 @@ export default function Building({ count }) {
   function box() {
     let item = []
 
-    for (let i = 0; i < count; i++) {
-      if (i === 0) {
+    switch (count) {
+      case 8:
         item.push(
-          <RigidBody type='fixed' key={i} gravityScale={1} position-y={0}>
-            <mesh receiveShadow ref={addToRefs} scale={1}>
-              <boxGeometry args={[1, 0.2, 1]} />
-              <meshStandardMaterial color={'tomato'} />
-            </mesh>
+          <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+            <mesh
+              receiveShadow
+              ref={addToRefs}
+              scale={1}
+              geometry={nodes.Mesh005.geometry}
+              material={nodes.Mesh005.material}
+            ></mesh>
           </RigidBody>
         )
-      } else {
+        break
+      case 9:
         item.push(
-          <RigidBody
-            key={i}
-            gravityScale={1}
-            friction={0.7}
-            position-y={(i + 1) / 5}
-            colliders='hull'
-            type='dynamic'
-          >
-            <mesh castShadow ref={addToRefs} scale={1}>
-              <boxGeometry args={[1, 0.2, 1]} />
-              <meshStandardMaterial color={`hsl(${i * 10}, ${i * 10}%, 30%)`} />
-            </mesh>
-          </RigidBody>
+          <>
+            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+              <mesh
+                receiveShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005.geometry}
+                material={nodes.Mesh005.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='1'
+              gravityScale={1}
+              friction={0.7}
+              position-y={2.71}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_1.geometry}
+                material={nodes.Mesh005_1.material}
+              ></mesh>
+            </RigidBody>
+          </>
         )
-      }
+        break
+      case 10:
+        item.push(
+          <>
+            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+              <mesh
+                receiveShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005.geometry}
+                material={nodes.Mesh005.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='1'
+              gravityScale={1}
+              friction={0.7}
+              position-y={2.71}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_1.geometry}
+                material={nodes.Mesh005_1.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='2'
+              gravityScale={1}
+              friction={0.7}
+              position-y={3.36}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+          </>
+        )
+        break
+      case 11:
+        item.push(
+          <>
+            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+              <mesh
+                receiveShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005.geometry}
+                material={nodes.Mesh005.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='1'
+              gravityScale={1}
+              friction={0.7}
+              position-y={2.71}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_1.geometry}
+                material={nodes.Mesh005_1.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='2'
+              gravityScale={1}
+              friction={0.7}
+              position-y={3.36}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='3'
+              gravityScale={1}
+              friction={0.7}
+              position-y={3.81}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+          </>
+        )
+        break
+      case 12:
+        item.push(
+          <>
+            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+              <mesh
+                receiveShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005.geometry}
+                material={nodes.Mesh005.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='1'
+              gravityScale={1}
+              friction={0.7}
+              position-y={2.71}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_1.geometry}
+                material={nodes.Mesh005_1.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='2'
+              gravityScale={1}
+              friction={0.7}
+              position-y={3.36}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='3'
+              gravityScale={1}
+              friction={0.7}
+              position-y={3.81}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='4'
+              gravityScale={1}
+              friction={0.7}
+              position-y={4.26}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+          </>
+        )
+        break
+      case 13:
+        item.push(
+          <>
+            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+              <mesh
+                receiveShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005.geometry}
+                material={nodes.Mesh005.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='1'
+              gravityScale={1}
+              friction={0.7}
+              position-y={2.71}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_1.geometry}
+                material={nodes.Mesh005_1.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='2'
+              gravityScale={1}
+              friction={0.7}
+              position-y={3.36}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='3'
+              gravityScale={1}
+              friction={0.7}
+              position-y={3.81}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='4'
+              gravityScale={1}
+              friction={0.7}
+              position-y={4.26}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='5'
+              gravityScale={1}
+              friction={0.7}
+              position-y={4.71}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+          </>
+        )
+        break
+      case 14:
+        item.push(
+          <>
+            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+              <mesh
+                receiveShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005.geometry}
+                material={nodes.Mesh005.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='1'
+              gravityScale={1}
+              friction={0.7}
+              position-y={2.71}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_1.geometry}
+                material={nodes.Mesh005_1.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='2'
+              gravityScale={1}
+              friction={0.7}
+              position-y={3.36}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='3'
+              gravityScale={1}
+              friction={0.7}
+              position-y={3.81}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='4'
+              gravityScale={1}
+              friction={0.7}
+              position-y={4.26}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='5'
+              gravityScale={1}
+              friction={0.7}
+              position-y={4.71}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+            <RigidBody
+              key='6'
+              gravityScale={1}
+              friction={0.7}
+              position-y={5.16}
+              // colliders='hull'
+              type='fixed'
+              // type='dynamic'
+            >
+              <mesh
+                castShadow
+                ref={addToRefs}
+                scale={1}
+                geometry={nodes.Mesh005_2.geometry}
+                material={nodes.Mesh005_2.material}
+              ></mesh>
+            </RigidBody>
+          </>
+        )
+        break
     }
 
     return <>{item}</>
@@ -94,16 +527,19 @@ export default function Building({ count }) {
       <ambientLight intensity={0.5} />
       <Controls />
       <group ref={ref} position={[0, -(32 / 10) - 0.6, 0]}>
-        <Physics
-          gravity={[0, -2.8, 0]}
-          // debug
-        >
+        <Physics gravity={[0, -2.8, 0]} debug>
           {box()}
           <RigidBody type='fixed'>
-            <CuboidCollider args={[0.01, 7, 0.5]} position={[0.511, 5, 0]} />
-            <CuboidCollider args={[0.01, 7, 0.5]} position={[-0.511, 5, 0]} />
-            <CuboidCollider args={[0.5, 7, 0.01]} position={[0, 5, 0.511]} />
-            <CuboidCollider args={[0.5, 7, 0.01]} position={[0, 5, -0.511]} />
+            <CuboidCollider
+              args={[0.01, 7, 4.1]}
+              position={[2.411, 5, -4.05]}
+            />
+            <CuboidCollider
+              args={[0.01, 7, 4.1]}
+              position={[-2.211, 5, -4.05]}
+            />
+            <CuboidCollider args={[2.6, 7, 0.01]} position={[0, 5, 0.111]} />
+            <CuboidCollider args={[2.6, 7, 0.01]} position={[0, 5, -8.211]} />
           </RigidBody>
           {/* <RigidBody type='fixed'>
             <mesh>
