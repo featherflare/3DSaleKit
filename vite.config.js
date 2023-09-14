@@ -14,4 +14,11 @@ export default defineConfig({
     }),
   ],
   assetsInclude: ['**/*.glb'],
+  root: 'src/',
+  build: {
+    outDir: '../dist',
+    emptyOutDir: true,
+    sourcemap: true,
+  },
+  base: './',
 })
