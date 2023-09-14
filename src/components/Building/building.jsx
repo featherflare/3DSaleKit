@@ -5,18 +5,20 @@ import {
   InstancedRigidBodies,
   Physics,
   RigidBody,
+  vec3,
 } from '@react-three/rapier'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import fragmentShader from './fragment.glsl'
 import vertexShader from './vertex.glsl'
 import { PerspectiveCamera } from 'three'
 import Build3D from '../../assets/glb/demo.glb'
+import * as THREE from 'three'
 
-export default function Building({ count }) {
+export default function Building({ count, focus }) {
   const ref = useRef()
   const buildref = useRef()
   const { nodes } = useGLTF(Build3D)
-  console.log(nodes)
+
   // const data = useMemo(
   //   () => ({
   //     uniforms: { uHeight: { type: 'f', value: 0.0 } },
@@ -55,7 +57,7 @@ export default function Building({ count }) {
       case 9:
         item.push(
           <>
-            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+            <RigidBody type='fixed' key='1' gravityScale={1} position-y={0}>
               <mesh
                 receiveShadow
                 ref={addToRefs}
@@ -65,7 +67,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='1'
+              key='2'
               gravityScale={1}
               friction={0.7}
               position-y={2.71}
@@ -87,7 +89,7 @@ export default function Building({ count }) {
       case 10:
         item.push(
           <>
-            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+            <RigidBody type='fixed' key='3' gravityScale={1} position-y={0}>
               <mesh
                 receiveShadow
                 ref={addToRefs}
@@ -97,7 +99,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='1'
+              key='4'
               gravityScale={1}
               friction={0.7}
               position-y={2.71}
@@ -114,7 +116,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='2'
+              key='5'
               gravityScale={1}
               friction={0.7}
               position-y={3.36}
@@ -136,7 +138,7 @@ export default function Building({ count }) {
       case 11:
         item.push(
           <>
-            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+            <RigidBody type='fixed' key='6' gravityScale={1} position-y={0}>
               <mesh
                 receiveShadow
                 ref={addToRefs}
@@ -163,7 +165,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='2'
+              key='7'
               gravityScale={1}
               friction={0.7}
               position-y={3.36}
@@ -180,7 +182,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='3'
+              key='8'
               gravityScale={1}
               friction={0.7}
               position-y={3.81}
@@ -202,7 +204,7 @@ export default function Building({ count }) {
       case 12:
         item.push(
           <>
-            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+            <RigidBody type='fixed' key='9' gravityScale={1} position-y={0}>
               <mesh
                 receiveShadow
                 ref={addToRefs}
@@ -212,7 +214,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='1'
+              key='10'
               gravityScale={1}
               friction={0.7}
               position-y={2.71}
@@ -229,7 +231,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='2'
+              key='11'
               gravityScale={1}
               friction={0.7}
               position-y={3.36}
@@ -246,7 +248,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='3'
+              key='12'
               gravityScale={1}
               friction={0.7}
               position-y={3.81}
@@ -263,7 +265,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='4'
+              key='13'
               gravityScale={1}
               friction={0.7}
               position-y={4.26}
@@ -285,7 +287,7 @@ export default function Building({ count }) {
       case 13:
         item.push(
           <>
-            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+            <RigidBody type='fixed' key='14' gravityScale={1} position-y={0}>
               <mesh
                 receiveShadow
                 ref={addToRefs}
@@ -295,7 +297,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='1'
+              key='15'
               gravityScale={1}
               friction={0.7}
               position-y={2.71}
@@ -312,7 +314,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='2'
+              key='16'
               gravityScale={1}
               friction={0.7}
               position-y={3.36}
@@ -329,7 +331,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='3'
+              key='17'
               gravityScale={1}
               friction={0.7}
               position-y={3.81}
@@ -346,7 +348,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='4'
+              key='18'
               gravityScale={1}
               friction={0.7}
               position-y={4.26}
@@ -363,7 +365,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='5'
+              key='19'
               gravityScale={1}
               friction={0.7}
               position-y={4.71}
@@ -385,7 +387,7 @@ export default function Building({ count }) {
       case 14:
         item.push(
           <>
-            <RigidBody type='fixed' key='0' gravityScale={1} position-y={0}>
+            <RigidBody type='fixed' key='20' gravityScale={1} position-y={0}>
               <mesh
                 receiveShadow
                 ref={addToRefs}
@@ -395,7 +397,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='1'
+              key='21'
               gravityScale={1}
               friction={0.7}
               position-y={2.71}
@@ -412,7 +414,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='2'
+              key='22'
               gravityScale={1}
               friction={0.7}
               position-y={3.36}
@@ -429,7 +431,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='3'
+              key='23'
               gravityScale={1}
               friction={0.7}
               position-y={3.81}
@@ -446,7 +448,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='4'
+              key='24'
               gravityScale={1}
               friction={0.7}
               position-y={4.26}
@@ -463,7 +465,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='5'
+              key='25'
               gravityScale={1}
               friction={0.7}
               position-y={4.71}
@@ -480,7 +482,7 @@ export default function Building({ count }) {
               ></mesh>
             </RigidBody>
             <RigidBody
-              key='6'
+              key='26'
               gravityScale={1}
               friction={0.7}
               position-y={5.16}
@@ -504,7 +506,12 @@ export default function Building({ count }) {
     return <>{item}</>
   }
 
-  useFrame(() => {
+  useFrame((state) => {
+    if (focus) {
+      console.log(state)
+      ref.current.position.set(0, -(32 / 10) - 0.6, 4)
+      // state.camera.lookAt(ref.current.position)
+    }
     // buildref.current.uniforms.uHeight.value = count
   })
 
@@ -512,22 +519,15 @@ export default function Building({ count }) {
     // console.log(buildref.current)
   }, [count])
 
-  function Controls() {
-    const {
-      camera,
-      gl: { domElement },
-    } = useThree()
-
-    return <OrbitControls args={[camera, domElement]} />
-  }
   return (
     <>
-      {/* <OrbitControls /> */}
       <directionalLight position={[1, 2, 3]} intensity={1.5} />
       <ambientLight intensity={0.5} />
-      <Controls />
-      <group ref={ref} position={[0, -(32 / 10) - 0.6, 0]}>
-        <Physics gravity={[0, -2.8, 0]} debug>
+      <group ref={ref} position={[0, -(32 / 10) - 0.6, 4]}>
+        <Physics
+          gravity={[0, -2.8, 0]}
+          // debug
+        >
           {box()}
           <RigidBody type='fixed'>
             <CuboidCollider
