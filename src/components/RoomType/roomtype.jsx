@@ -3,18 +3,78 @@ import Simulate from '../../assets/image/simulateLight.svg'
 import Bedroom from '../../assets/image/bedroom.svg'
 import Bathroom from '../../assets/image/bathroom.svg'
 import Kitchen from '../../assets/image/kitchen.svg'
-import Roomtype from '../../assets/image/roomtypeTest.png'
-import { useState } from 'react'
+import a1a from '../../assets/image/roomtype/A-1A.png'
+import b11a from '../../assets/image/roomtype/B1-1A.png'
+import c11a from '../../assets/image/roomtype/C1-1A.png'
+import d1a from '../../assets/image/roomtype/D1A.png'
+import e11a from '../../assets/image/roomtype/E1-1A.png'
+import { useEffect, useState } from 'react'
 export default function RoomType({ onClick, room, selectRoom }) {
   const [isSelect, setIsSelect] = useState(1)
+
+  const isSelectRoom = (val) => {
+    selectRoom(val)
+  }
+
+  useEffect(() => {
+    setIsSelect(room + 1)
+  }, [room])
+
+  const roomItem = [
+    {
+      name: 'Type A-1A',
+      size: '22.5 SQ.M.',
+      roompic: a1a,
+      roomDetail: ['1 bedroom ', '1 kitchen ', '1 bathroom'],
+      roomDetailSrc: [Bedroom, Kitchen, Bathroom],
+    },
+    {
+      name: 'Type B1-1A',
+      size: '26.5 SQ.M.',
+      roompic: b11a,
+      roomDetail: ['1 bedroom ', '1 living room', '1 kitchen ', '1 bathroom'],
+      roomDetailSrc: [Bedroom, Bathroom, Kitchen, Bathroom],
+    },
+    {
+      name: 'Type C1-1A',
+      size: '34.5 SQ.M.',
+      roompic: c11a,
+      roomDetail: [
+        '1 bedroom ',
+        '1 living room',
+        '1 multi purpose room ',
+        '1 kitchen ',
+        '1 bathroom',
+      ],
+      roomDetailSrc: [Bedroom, Kitchen, Bathroom, Kitchen, Bathroom],
+    },
+    {
+      name: 'Type D1A',
+      size: '42.5 SQ.M.',
+      roompic: d1a,
+      roomDetail: ['1 bedroom ', '1 living room', '1 kitchen ', '1 bathroom'],
+      roomDetailSrc: [Bedroom, Bathroom, Kitchen, Bathroom],
+    },
+    {
+      name: 'Type E1-1A',
+      size: '50 SQ.M.',
+      roompic: e11a,
+      roomDetail: ['2 bedroom ', '1 living room', '1 kitchen ', '2 bathroom'],
+      roomDetailSrc: [Bedroom, Bathroom, Kitchen, Bathroom],
+    },
+  ]
 
   return (
     <>
       <div className='roomtype'>
-        <div className='textheight dbheaven header1'>TYPE A - 1A</div>
-        <div className='textheight dbheaven header2'>22.50 SQ.M.</div>
+        <div className='textheight dbheaven header1'>{roomItem[room].name}</div>
+        <div className='textheight dbheaven header2'>{roomItem[room].size}</div>
         <div className='floorImg'>
-          <img className='room' src={Roomtype} alt='Floor Plan'></img>
+          <img
+            className='room'
+            src={roomItem[room].roompic}
+            alt='Floor Plan'
+          ></img>
           <div className='roomIconMenu'>
             <img
               className='roomIconImg'
@@ -28,18 +88,16 @@ export default function RoomType({ onClick, room, selectRoom }) {
             <div>room comparison</div>
           </div>
           <div className='roomType'>
-            <div className='roomTypeDetail'>
-              <img className='roomIconImg' src={Bedroom} alt='Bedroom' />1
-              bedroom
-            </div>
-            <div className='roomTypeDetail'>
-              <img className='roomIconImg' src={Bathroom} alt='Bathroom' />1
-              bathroom
-            </div>
-            <div className='roomTypeDetail'>
-              <img className='roomIconImg' src={Kitchen} alt='Kitchen' />1
-              kitchen
-            </div>
+            {roomItem[room].roomDetail.map((item, index) => (
+              <div className='roomTypeDetail'>
+                <img
+                  className='roomIconImg'
+                  src={roomItem[room].roomDetailSrc[index]}
+                  alt='Bedroom'
+                />
+                {item}
+              </div>
+            ))}
           </div>
         </div>
         <div className='floorBack' onClick={onClick}>
@@ -62,7 +120,7 @@ export default function RoomType({ onClick, room, selectRoom }) {
         <div
           className={`roomTypeListDetail ${isSelect == 1 ? 'select' : ''}`}
           onClick={() => {
-            setIsSelect(1)
+            isSelectRoom(0)
           }}
         >
           <div className='roomTypeDetailNumber'>1</div>
@@ -74,7 +132,7 @@ export default function RoomType({ onClick, room, selectRoom }) {
         <div
           className={`roomTypeListDetail ${isSelect == 2 ? 'select' : ''}`}
           onClick={() => {
-            setIsSelect(2)
+            isSelectRoom(1)
           }}
         >
           <div className='roomTypeDetailNumber'>2</div>
@@ -86,7 +144,7 @@ export default function RoomType({ onClick, room, selectRoom }) {
         <div
           className={`roomTypeListDetail ${isSelect == 3 ? 'select' : ''}`}
           onClick={() => {
-            setIsSelect(3)
+            isSelectRoom(2)
           }}
         >
           <div className='roomTypeDetailNumber'>3</div>
@@ -98,7 +156,7 @@ export default function RoomType({ onClick, room, selectRoom }) {
         <div
           className={`roomTypeListDetail ${isSelect == 4 ? 'select' : ''}`}
           onClick={() => {
-            setIsSelect(4)
+            isSelectRoom(3)
           }}
         >
           <div className='roomTypeDetailNumber'>4</div>
@@ -110,7 +168,7 @@ export default function RoomType({ onClick, room, selectRoom }) {
         <div
           className={`roomTypeListDetail ${isSelect == 5 ? 'select' : ''}`}
           onClick={() => {
-            setIsSelect(5)
+            isSelectRoom(4)
           }}
         >
           <div className='roomTypeDetailNumber'>5</div>

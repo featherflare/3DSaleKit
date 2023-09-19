@@ -20,10 +20,10 @@ export default function Home() {
     if (count > 8) setCount(count - 1)
   }
 
-  const [room, setRoom] = useState(1)
+  const [room, setRoom] = useState(0)
 
   const selectRoom = (val) => {
-    setCount(val)
+    setRoom(val)
   }
 
   const [route, setRoute] = useState('')
