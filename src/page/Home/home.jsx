@@ -96,7 +96,7 @@ export default function Home() {
       if (focus && time < 100) {
         state.camera.position.lerp(new THREE.Vector3(1, 10, 0), 0.1)
       } else if (!focus && time < 100) {
-        state.camera.position.lerp(new THREE.Vector3(10, 0, 10), 0.1)
+        state.camera.position.lerp(new THREE.Vector3(9, 0, 9), 0.1)
       }
     }, [])
 
@@ -108,7 +108,7 @@ export default function Home() {
           dampingFactor={0.05}
           rotateSpeed={0.5}
           enablePan={false}
-          enableZoom={false}
+          enableZoom={true}
           minPolarAngle={0}
           maxPolarAngle={Math.PI / 1.5}
         />
@@ -402,6 +402,7 @@ export default function Home() {
               onClick={() => {
                 setIsSelect(6)
                 setIsActive(true)
+                setFocus(false)
                 setRoute('room')
               }}
             >
