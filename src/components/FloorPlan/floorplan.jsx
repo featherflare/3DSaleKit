@@ -1,7 +1,7 @@
 import Panorama from '../../assets/image/panoramaView.svg'
 import Simulate from '../../assets/image/simulateLight.svg'
 import Floorplan from '../../assets/image/floorplan.png'
-export default function FloorPlan({ onClick }) {
+export default function FloorPlan({ onClick, room, selectRoom }) {
   return (
     <>
       <div className='floorplan' id='floor'>

@@ -11,6 +11,9 @@ export default defineConfig({
       google: {
         families: ['Roboto'],
       },
+      custom: {
+        families: [{ name: 'DBHeaven', src: './src/assets/fonts/*.ttf' }],
+      },
     }),
   ],
   assetsInclude: ['**/*.glb'],

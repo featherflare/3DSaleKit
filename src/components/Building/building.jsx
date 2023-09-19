@@ -508,7 +508,7 @@ export default function Building({ count, focus }) {
 
   useFrame((state) => {
     if (focus) {
-      console.log(state)
+      // console.log(state)
       ref.current.position.set(0, -(32 / 10) - 0.6, 4)
       // state.camera.lookAt(ref.current.position)
     }

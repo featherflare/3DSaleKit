@@ -5,7 +5,7 @@ import Bathroom from '../../assets/image/bathroom.svg'
 import Kitchen from '../../assets/image/kitchen.svg'
 import Roomtype from '../../assets/image/roomtypeTest.png'
 import { useState } from 'react'
-export default function RoomType({ onClick }) {
+export default function RoomType({ onClick, room, selectRoom }) {
   const [isSelect, setIsSelect] = useState(1)
 
   return (
@@ -14,7 +14,7 @@ export default function RoomType({ onClick }) {
         <div className='textheight dbheaven header1'>TYPE A - 1A</div>
         <div className='textheight dbheaven header2'>22.50 SQ.M.</div>
         <div className='floorImg'>
-          <img src={Roomtype} alt='Floor Plan'></img>
+          <img className='room' src={Roomtype} alt='Floor Plan'></img>
           <div className='roomIconMenu'>
             <img
               className='roomIconImg'
