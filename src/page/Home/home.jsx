@@ -1,4 +1,4 @@
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import React, { useRef, useState, useEffect } from 'react'
 import Building from '../../components/Building/building'
 import FloorPlan from '../../components/FloorPlan/floorplan'
@@ -8,139 +8,54 @@ import Repeat from '../../helper/util/repeatFunc'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 
 export default function Home() {
-  const [count, setCount] = useState(14)
-
-  const addMesh = () => {
-    // console.log(count)
-    if (count < 15) setCount(count + 1)
-  }
-
-  const removeMesh = () => {
-    // console.log(count)
-    if (count > 8) setCount(count - 1)
-  }
-
-  const [room, setRoom] = useState(0)
-
-  const selectRoom = (val) => {
-    setRoom(val)
-  }
-
-  const [route, setRoute] = useState('')
-  const [isActive, setIsActive] = useState(false)
-  const [isSelect, setIsSelect] = useState(0)
-  const [focus, setFocus] = useState(false)
-
+  // Building Animtion Constance //
+  const [obj, setObj] = useState()
+  const [time, setTime] = useState(0)
+  const [focus, setFocus] = useState()
   const compassRef = useRef()
   const cameraRef = useRef()
   const floorBtnRef = useRef()
 
-  var time = 0
+  // Floor Select Constance //
+  const [count, setCount] = useState(14)
 
-  let item = []
-  const onClose = () => {
-    // console.log(item)
-    time = 0
-    setFocus(false)
-    setRoute('')
-    setIsActive(false)
-    setCount(14)
+  // Room Select Constance //
+  const [room, setRoom] = useState(0)
 
-    cameraRef.current.position.lerp(new THREE.Vector3(10, 0, 10), 0.1)
+  // Nav Select Constance //
+  const [route, setRoute] = useState('')
+  const [isActive, setIsActive] = useState(false)
+  const [isSelect, setIsSelect] = useState(0)
+
+  // Room Select Constance //
+  const selectRoom = (val) => {
+    setRoom(val)
   }
 
-  const OnGoToFloorPlanOrRoomType = () => {
-    // console.log(item)
-    if (route == 'floor') {
-      item.push(
-        <FloorPlan
-          key='1'
-          onClick={onClose}
-          room={room}
-          selectRoom={selectRoom}
-        />
-      )
-      item.length = 1
-    } else if (route == 'room') {
-      item.push(
-        <RoomType
-          key='2'
-          onClick={onClose}
-          room={room}
-          selectRoom={selectRoom}
-        />
-      )
-      item.length = 1
-    } else {
-      item.push(<div key='3' />)
-      item.length = 1
-    }
-
-    return (
-      <div id='section' className={`section ${isActive ? 'have' : ''}`}>
-        {item}
-      </div>
-    )
+  // Floor Select Constance //
+  const addMesh = () => {
+    if (count < 15) setCount(count + 1)
+    setTime(200)
   }
 
-  function SceneCamera() {
-    useFrame((state) => {
-      time++
-      var dir = new THREE.Vector3()
-      var sph = new THREE.Spherical()
-      state.camera.getWorldDirection(dir)
-      sph.setFromVector3(dir)
-
-      rotateCompass(sph)
-
-      if (focus && time < 100) {
-        state.camera.position.lerp(new THREE.Vector3(1, 10, 0), 0.1)
-      } else if (!focus && time < 100) {
-        state.camera.position.lerp(new THREE.Vector3(9, 0, 9), 0.1)
-      }
-    }, [])
-
-    return (
-      <>
-        <OrbitControls
-          makeDefault
-          enableDamping={true}
-          dampingFactor={0.05}
-          rotateSpeed={0.5}
-          enablePan={false}
-          enableZoom={true}
-          minPolarAngle={0}
-          maxPolarAngle={Math.PI / 1.5}
-        />
-        <PerspectiveCamera
-          makeDefault
-          rotation={[0, Math.PI, 0]}
-          fov={75}
-          position={[10, 0, 10]}
-          near={1}
-          far={1000}
-          ref={cameraRef}
-        />
-      </>
-    )
+  const removeMesh = () => {
+    if (count > 8) setCount(count - 1)
+    setTime(200)
   }
 
-  const rotateCompass = (rotation) => {
-    if (compassRef.current) {
-      compassRef.current.style.transform = `rotateY(${
-        ((rotation.theta * -360) / Math.PI - 180) / 2
-      }deg)`
-    }
+  const selectFloor = (val) => {
+    setCount(val)
+    setTime(200)
   }
 
   useEffect(() => {
     if (floorBtnRef.current) {
       floorBtnRef.current.style.transform = `translateY( ${
-        (count - 8) * 4 - 16
+        (count - 8) * 5 - 20
       }rem)`
     }
 
-    if (isActive) {
+    if (isSelect === 5) {
       if (count + 1 <= 15) {
         document.getElementById(count + 1).classList.remove('unselect-1')
         document.getElementById(count + 1).classList.remove('unselect-2')
@@ -181,11 +96,139 @@ export default function Home() {
     }
   }, [count])
 
+  // Nav Select Constance //
+  let item = []
+
+  const onClose = () => {
+    setTime(0)
+    setFocus(false)
+    setRoute('')
+    setIsActive(false)
+    setCount(14)
+  }
+
+  const onChangePage = (val) => {
+    if (val == 5) {
+      setRoute('floor')
+    } else if (val == 6) {
+      setRoute('room')
+    } else {
+      setRoute('')
+    }
+    if (val == 5 || val == 6) {
+      setIsActive(true)
+    } else {
+      setIsActive(false)
+    }
+    if (val == 5) {
+      setFocus(true)
+      setCount(8)
+    } else {
+      setFocus(false)
+      setCount(14)
+    }
+    setIsSelect(val)
+    setTime(0)
+  }
+
+  const OnGoToFloorPlanOrRoomType = () => {
+    // console.log(item)
+    if (route == 'floor') {
+      item.push(
+        <FloorPlan
+          key='1'
+          onClick={onClose}
+          room={room}
+          selectRoom={selectRoom}
+        />
+      )
+      item.length = 1
+    } else if (route == 'room') {
+      item.push(
+        <RoomType
+          key='2'
+          onClick={onClose}
+          room={room}
+          selectRoom={selectRoom}
+        />
+      )
+      item.length = 1
+    } else {
+      item.push(<div key='3' />)
+      item.length = 1
+    }
+
+    return (
+      <div id='section' className={`section ${isActive ? 'have' : ''}`}>
+        {item}
+      </div>
+    )
+  }
+
+  // Building Animtion Section //
+  function SceneCamera() {
+    useFrame((state) => {
+      setTime((prev) => prev++)
+      var dir = new THREE.Vector3()
+      var sph = new THREE.Spherical()
+      state.camera.getWorldDirection(dir)
+      sph.setFromVector3(dir)
+
+      console.log(time)
+
+      rotateCompass(sph)
+      focus
+        ? state.camera.lookAt(new THREE.Vector3(obj.x, obj.y + 6, obj.z))
+        : state.camera.lookAt(new THREE.Vector3(obj.x, obj.y, obj.z))
+      if (focus && time < 100) {
+        state.camera.position.lerp(
+          new THREE.Vector3(obj.x, obj.y + 9, obj.z - 0.5),
+          0.1
+        )
+      } else if (!focus && time < 100) {
+        state.camera.position.lerp(new THREE.Vector3(9, 0, -9), 0.1)
+      }
+    }, [])
+
+    return (
+      <>
+        <OrbitControls
+          makeDefault
+          enableDamping={true}
+          dampingFactor={0.05}
+          rotateSpeed={0.5}
+          enablePan={false}
+          enableZoom={true}
+          minPolarAngle={0}
+          maxPolarAngle={Math.PI / 1.5}
+        />
+        <PerspectiveCamera
+          makeDefault
+          rotation={[0, Math.PI, 0]}
+          fov={75}
+          position={[-10, 0, -10]}
+          near={1}
+          far={1000}
+          ref={cameraRef}
+        />
+      </>
+    )
+  }
+
+  const rotateCompass = (rotation) => {
+    if (compassRef.current) {
+      compassRef.current.style.transform = `rotateY(${
+        ((rotation.theta * -360) / Math.PI - 180) / 2
+      }deg)`
+    }
+  }
+
   return (
     <>
       <div className='content'>
         <div id='building' className={`building ${isActive ? 'have' : ''}`}>
           <Canvas
+            shadows
             flat
             linear
             resize={{ debounce: 0 }}
@@ -197,7 +240,11 @@ export default function Home() {
             }}
           >
             <SceneCamera />
-            <Building count={count} focus={focus} />
+            <Building
+              count={count}
+              focus={focus}
+              focusObj={(ref) => setObj(ref)}
+            />
           </Canvas>
           <div className='compass'>
             <div className='scene'>
@@ -242,7 +289,7 @@ export default function Home() {
                   id={8}
                   className={`btnSelectFloor ${count === 8 ? 'select' : ''}`}
                   onClick={() => {
-                    setCount(8)
+                    selectFloor(8)
                   }}
                 >
                   8
@@ -251,7 +298,7 @@ export default function Home() {
                   id={9}
                   className={`btnSelectFloor ${count === 9 ? 'select' : ''}`}
                   onClick={() => {
-                    setCount(9)
+                    selectFloor(9)
                   }}
                 >
                   9
@@ -260,7 +307,7 @@ export default function Home() {
                   id={10}
                   className={`btnSelectFloor ${count === 10 ? 'select' : ''}`}
                   onClick={() => {
-                    setCount(10)
+                    selectFloor(10)
                   }}
                 >
                   10
@@ -269,7 +316,7 @@ export default function Home() {
                   id={11}
                   className={`btnSelectFloor ${count === 11 ? 'select' : ''}`}
                   onClick={() => {
-                    setCount(11)
+                    selectFloor(11)
                   }}
                 >
                   11
@@ -278,7 +325,7 @@ export default function Home() {
                   id={12}
                   className={`btnSelectFloor ${count === 12 ? 'select' : ''}`}
                   onClick={() => {
-                    setCount(12)
+                    selectFloor(12)
                   }}
                 >
                   12
@@ -287,7 +334,7 @@ export default function Home() {
                   id={13}
                   className={`btnSelectFloor ${count === 13 ? 'select' : ''}`}
                   onClick={() => {
-                    setCount(13)
+                    selectFloor(13)
                   }}
                 >
                   13
@@ -296,7 +343,7 @@ export default function Home() {
                   id={14}
                   className={`btnSelectFloor ${count === 14 ? 'select' : ''}`}
                   onClick={() => {
-                    setCount(14)
+                    selectFloor(14)
                   }}
                 >
                   14
@@ -305,7 +352,7 @@ export default function Home() {
                   id={15}
                   className={`btnSelectFloor ${count === 15 ? 'select' : ''}`}
                   onClick={() => {
-                    setCount(15)
+                    selectFloor(15)
                   }}
                 >
                   15
@@ -326,16 +373,7 @@ export default function Home() {
             <a
               className='dbheaven'
               onClick={() => {
-                time = 0
-                setRoute('')
-                setIsActive(false)
-                setIsSelect(0)
-                setCount(14)
-                setFocus(false)
-                cameraRef.current.position.lerp(
-                  new THREE.Vector3(10, 0, 10),
-                  0.1
-                )
+                onChangePage(0)
               }}
             >
               HOME
@@ -345,7 +383,7 @@ export default function Home() {
             <a
               className='dbheaven'
               onClick={() => {
-                setIsSelect(1)
+                onChangePage(1)
               }}
             >
               PROJECT DETAIL
@@ -355,7 +393,7 @@ export default function Home() {
             <a
               className='dbheaven'
               onClick={() => {
-                setIsSelect(2)
+                onChangePage(2)
               }}
             >
               PROJECT CONCEPT
@@ -365,7 +403,7 @@ export default function Home() {
             <a
               className='dbheaven'
               onClick={() => {
-                setIsSelect(3)
+                onChangePage(3)
               }}
             >
               LOCATION
@@ -375,7 +413,7 @@ export default function Home() {
             <a
               className='dbheaven'
               onClick={() => {
-                setIsSelect(4)
+                onChangePage(4)
               }}
             >
               PROJECT HIGHLIGHT
@@ -385,12 +423,7 @@ export default function Home() {
             <a
               className='dbheaven'
               onClick={() => {
-                setIsSelect(5)
-                time = 0
-                setRoute('floor')
-                setCount(8)
-                setIsActive(true)
-                setFocus(true)
+                onChangePage(5)
               }}
             >
               FLOOR PLAN
@@ -400,10 +433,7 @@ export default function Home() {
             <a
               className='dbheaven'
               onClick={() => {
-                setIsSelect(6)
-                setIsActive(true)
-                setFocus(false)
-                setRoute('room')
+                onChangePage(6)
               }}
             >
               ROOM TYPE
@@ -413,7 +443,7 @@ export default function Home() {
             <a
               className='dbheaven'
               onClick={() => {
-                setIsSelect(7)
+                onChangePage(7)
               }}
             >
               GALLERY
@@ -423,7 +453,7 @@ export default function Home() {
             <a
               className='dbheaven'
               onClick={() => {
-                setIsSelect(8)
+                onChangePage(8)
               }}
             >
               PANOROMA
