@@ -19,7 +19,6 @@ import FinalCut4 from '../../assets/glb/final_11-12.glb'
 import FinalCut5 from '../../assets/glb/final_13.glb'
 import FinalCut6 from '../../assets/glb/final_14-15.glb'
 import FinalCut7 from '../../assets/glb/final_16-rooftop.glb'
-import Final1 from '../../assets/glb/final1.glb'
 import Final2 from '../../assets/glb/final2.glb'
 import * as THREE from 'three'
 
@@ -30,10 +29,9 @@ export default function Building({ count, focus, focusObj }) {
     // { node: useGLTF(FinalCut1).nodes['cut1-7obj'].children[0].children },
     // { node: useGLTF(FinalCut2).nodes['cut8obj'].children[0].children },
     // { node: useGLTF(FinalCut3).nodes['cut9obj'].children[0].children },
-    // { node: useGLTF(Final1).nodes['demo_demo01obj'].children[0].children },
-    { node: useGLTF(Final2).nodes['demo_demo01obj'].children[0].children },
+    // { node: useGLTF(Final2).nodes['demo_demo01obj'].children[0].children },
   ]
-  const building2 = [{ node: useGLTF(Final1) }, { node: useGLTF(Final2) }]
+  const building2 = [{ node: useGLTF(FinalCut1) }, { node: useGLTF(FinalCut2) }]
   console.log(building2)
 
   // const data = useMemo(
