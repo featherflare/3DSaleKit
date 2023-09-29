@@ -6,18 +6,20 @@ import * as THREE from 'three'
 import RoomType from '../../components/RoomType/roomtype'
 import Repeat from '../../helper/util/repeatFunc'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
+import * as TWEEN from '@tweenjs/tween.js'
 
 export default function Home() {
   // Building Animtion Constance //
   const [obj, setObj] = useState()
-  const [time, setTime] = useState(0)
+  var time = 0
   const [focus, setFocus] = useState()
   const compassRef = useRef()
   const cameraRef = useRef()
   const floorBtnRef = useRef()
 
   // Floor Select Constance //
-  const [count, setCount] = useState(14)
+  const [count, setCount] = useState(16)
+  const [isUP, setIsUP] = useState(true)
 
   // Room Select Constance //
   const [room, setRoom] = useState(0)
@@ -34,18 +36,24 @@ export default function Home() {
 
   // Floor Select Constance //
   const addMesh = () => {
-    if (count < 15) setCount(count + 1)
-    setTime(200)
+    time = time + 200
+    if (count < 15) {
+      setCount(count + 1)
+      setIsUP(true)
+    }
   }
 
   const removeMesh = () => {
-    if (count > 8) setCount(count - 1)
-    setTime(200)
+    time = time + 200
+    if (count > 8) {
+      setCount(count - 1)
+      setIsUP(false)
+    }
   }
 
   const selectFloor = (val) => {
+    time = time + 200
     setCount(val)
-    setTime(200)
   }
 
   useEffect(() => {
@@ -100,11 +108,11 @@ export default function Home() {
   let item = []
 
   const onClose = () => {
-    setTime(0)
+    time = 0
     setFocus(false)
     setRoute('')
     setIsActive(false)
-    setCount(14)
+    setCount(16)
   }
 
   const onChangePage = (val) => {
@@ -125,10 +133,10 @@ export default function Home() {
       setCount(8)
     } else {
       setFocus(false)
-      setCount(14)
+      setCount(16)
     }
     setIsSelect(val)
-    setTime(0)
+    time = 0
   }
 
   const OnGoToFloorPlanOrRoomType = () => {
@@ -168,25 +176,29 @@ export default function Home() {
   // Building Animtion Section //
   function SceneCamera() {
     useFrame((state) => {
-      setTime((prev) => prev++)
+      time = time > 100 ? 101 : time + 1
       var dir = new THREE.Vector3()
       var sph = new THREE.Spherical()
       state.camera.getWorldDirection(dir)
       sph.setFromVector3(dir)
 
-      console.log(time)
-
+      console.log(obj)
+      // timer()
       rotateCompass(sph)
-      focus
-        ? state.camera.lookAt(new THREE.Vector3(obj.x, obj.y + 6, obj.z))
-        : state.camera.lookAt(new THREE.Vector3(obj.x, obj.y, obj.z))
-      if (focus && time < 100) {
-        state.camera.position.lerp(
-          new THREE.Vector3(obj.x, obj.y + 9, obj.z - 0.5),
-          0.1
-        )
-      } else if (!focus && time < 100) {
-        state.camera.position.lerp(new THREE.Vector3(9, 0, -9), 0.1)
+      if (obj) {
+        if (focus) {
+          // state.camera.lookAt(new THREE.Vector3(obj.x, 0, obj.z))
+        } else {
+          // state.camera.lookAt(new THREE.Vector3(obj.x, 0, obj.z))
+        }
+        if (focus && time < 100) {
+          // state.camera.position.lerp(
+          //   new THREE.Vector3(obj.x, obj.y + 9, obj.z - 0.5),
+          //   0.2
+          // )
+        } else if (!focus && time < 100) {
+          // state.camera.position.lerp(new THREE.Vector3(-9, 0, 9), 0.1)
+        }
       }
     }, [])
 
@@ -206,7 +218,7 @@ export default function Home() {
           makeDefault
           rotation={[0, Math.PI, 0]}
           fov={75}
-          position={[-10, 0, -10]}
+          position={[-10, 3, 10]}
           near={1}
           far={1000}
           ref={cameraRef}
@@ -244,6 +256,8 @@ export default function Home() {
               count={count}
               focus={focus}
               focusObj={(ref) => setObj(ref)}
+              setUp={(up) => setIsUP(up)}
+              isUp={isUP}
             />
           </Canvas>
           <div className='compass'>

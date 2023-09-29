@@ -15,6 +15,7 @@
     "@react-three/fiber": "^8.13.7",
     "@react-three/postprocessing": "^2.15.0",
     "@react-three/rapier": "^1.1.1",
+    "@tweenjs/tween.js": "^21.0.0",
     "camera-controls": "^2.7.2",
     "leva": "^0.9.35",
     "react": "^18.2.0",

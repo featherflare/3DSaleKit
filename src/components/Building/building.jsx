@@ -19,20 +19,45 @@ import FinalCut4 from '../../assets/glb/final_11-12.glb'
 import FinalCut5 from '../../assets/glb/final_13.glb'
 import FinalCut6 from '../../assets/glb/final_14-15.glb'
 import FinalCut7 from '../../assets/glb/final_16-rooftop.glb'
+import Floorplan from '../../assets/glb/floor_plan.glb'
 import Final2 from '../../assets/glb/final2.glb'
 import * as THREE from 'three'
 
-export default function Building({ count, focus, focusObj }) {
+export default function Building({ count, focus, focusObj, isUp, setUp }) {
   const ref = useRef()
   const buildref = useRef()
+  const [gravity, setGravity] = useState(1)
   const building = [
-    // { node: useGLTF(FinalCut1).nodes['cut1-7obj'].children[0].children },
-    // { node: useGLTF(FinalCut2).nodes['cut8obj'].children[0].children },
-    // { node: useGLTF(FinalCut3).nodes['cut9obj'].children[0].children },
+    { node: useGLTF(FinalCut1).nodes['cut1-7obj'].children[0].children },
+    { node: useGLTF(FinalCut2).nodes['cut_8-15obj'].children[0].children },
+    { node: useGLTF(FinalCut2).nodes['cut_8-15obj'].children[0].children },
+    { node: useGLTF(FinalCut3).nodes['cut_10obj'].children[0].children },
+    { node: useGLTF(FinalCut3).nodes['cut_10obj'].children[0].children },
+    { node: useGLTF(FinalCut3).nodes['cut_10obj'].children[0].children },
+    { node: useGLTF(FinalCut3).nodes['cut_10obj'].children[0].children },
+    { node: useGLTF(FinalCut3).nodes['cut_10obj'].children[0].children },
+    // { node: useGLTF(FinalCut4).nodes['cut_11-12obj'].children[0].children },
+    // { node: useGLTF(FinalCut4).nodes['cut_11-12obj'].children[0].children },
+    // { node: useGLTF(FinalCut5).nodes['cut_13obj'].children[0].children },
+    // {
+    //   node: useGLTF(FinalCut6).nodes['cut14-15obj'].children[0].children,
+    // },
+    { node: useGLTF(FinalCut7).nodes['cut_rooftopobj'].children[0].children },
     // { node: useGLTF(Final2).nodes['demo_demo01obj'].children[0].children },
   ]
-  const building2 = [{ node: useGLTF(FinalCut1) }, { node: useGLTF(FinalCut2) }]
-  console.log(building2)
+
+  const floorplan =
+    useGLTF(Floorplan).nodes['floor%20planobj'].children[0].children
+  const building2 = [
+    //   { node: useGLTF(FinalCut1) },
+    //   { node: useGLTF(FinalCut2) },
+    //   { node: useGLTF(FinalCut3) },
+    { node: useGLTF(FinalCut4) },
+    //   { node: useGLTF(FinalCut5) },
+    // { node: useGLTF(FinalCut6) },
+    // { node: useGLTF(FinalCut7) },
+  ]
+  // console.log(floorplan)
 
   // const data = useMemo(
   //   () => ({
@@ -55,39 +80,84 @@ export default function Building({ count, focus, focusObj }) {
   function box() {
     let item = [
       <RigidBody key='border' type='fixed'>
-        <CuboidCollider args={[0.01, 7, 1.4]} position={[2.411, 2, 0.5]} />
-        <CuboidCollider args={[0.01, 7, 1.4]} position={[-2.211, 2, 0.5]} />
-        <CuboidCollider args={[2.3, 7, 0.01]} position={[0.1, 2, 1.911]} />
-        <CuboidCollider args={[2.3, 7, 0.01]} position={[0.1, 2, -0.911]} />
+        {/* <CuboidCollider args={[0.01, 7, 1.4]} position={[2.211, -3, 0.5]} />
+        <CuboidCollider args={[0.01, 7, 1.4]} position={[-2.311, -3, 0.5]} />
+        <CuboidCollider args={[2.2, 7, 0.01]} position={[0.0, -3, 1.911]} />
+        <CuboidCollider args={[2.2, 7, 0.01]} position={[0.0, -3, -0.911]} /> */}
       </RigidBody>,
     ]
-    building.forEach((b, j) => {
-      b.node.map((item) => {
+    for (var j = 0; j < count - 7; j++) {
+      building[j].node.map((item, i) => {
         item.castShadow = true
       })
-      item.push(
-        <group key={j} castShadow>
-          {b.node.map((item, i) => (
-            <RigidBody
-              type='fixed'
-              key={i}
-              gravityScale={1}
-              position-y={-5 + j}
-            >
-              <mesh
-                receiveShadow
-                castShadow
-                ref={addToRefs}
-                scale={1}
-                geometry={item.geometry}
-                material={item.material}
-              ></mesh>
-            </RigidBody>
-          ))}
-        </group>
-      )
-      console.log(b)
-    })
+      if (j === 0) {
+        item.push(
+          <RigidBody
+            type='fixed'
+            key={j}
+            gravityScale={1}
+            position-y={-5.065 + j}
+          >
+            <group key={j}>
+              {building[j].node.map((item, i) => (
+                <mesh
+                  key={i}
+                  castShadow
+                  ref={addToRefs}
+                  scale={1}
+                  geometry={item.geometry}
+                  material={item.material}
+                ></mesh>
+              ))}
+            </group>
+          </RigidBody>
+        )
+      } else {
+        item.push(
+          <RigidBody
+            type='fixed'
+            key={j}
+            gravityScale={1}
+            position-y={-2.58 + j / 3.4}
+          >
+            <group key={j}>
+              {building[j].node.map((item, i) => (
+                <mesh
+                  key={i}
+                  castShadow
+                  ref={addToRefs}
+                  scale={1}
+                  geometry={item.geometry}
+                  material={item.material}
+                ></mesh>
+              ))}
+            </group>
+          </RigidBody>
+        )
+      }
+    }
+    // item.push(
+    //   <RigidBody
+    //     type='fixed'
+    //     key={j + 2}
+    //     gravityScale={1}
+    //     position={[0,-2.58 + j / 3.4]}
+    //     rotation={[0, Math.PI, 0]}
+    //   >
+    //     <group key={j + 2}>
+    //       {floorplan.map((item, i) => (
+    //         <mesh
+    //           key={i}
+    //           castShadow
+    //           ref={addToRefs}
+    //           scale={0.23}
+    //           geometry={item.geometry}
+    //           material={item.material}
+    //         ></mesh>
+    //       ))}
+    //     </group>
+    //   </RigidBody>
+    // )
     // item.push(
     //   <group key='build'>
     //     {b.map((item, i) => (
@@ -569,19 +639,102 @@ export default function Building({ count, focus, focusObj }) {
     return <>{item}</>
   }
 
+  function floor() {
+    let item = []
+    floorplan.map((item, i) => {
+      item.castShadow = true
+    })
+    item.push(
+      <group
+        key={2}
+        rotation={[0, Math.PI, 0]}
+        position={[0.075, -2.58 + (count - 7) / 3.4, 0.225]}
+      >
+        {floorplan.map((item, i) => (
+          <mesh
+            key={i}
+            castShadow
+            ref={addToRefs}
+            scale={0.23}
+            geometry={item.geometry}
+            material={item.material}
+          ></mesh>
+        ))}
+      </group>
+    )
+
+    return <>{item}</>
+  }
+
+  var acc = 0
   useFrame((state) => {
-    if (focus) {
-      // console.log(state)
-      ref.current.position.set(0, -(32 / 10) - 0.6, 4)
-      // state.camera.lookAt(ref.current.position)
+    acc = acc + Math.pow(0.2, 2)
+
+    if (gravity > 0) setGravity(gravity - acc)
+    if (count <= 15) {
+      if (count - 7 > 1) {
+        state.scene.children[2].children[0].children[0].children[2].children[
+          state.scene.children[2].children[0].children[0].children[2].children
+            .length - 3
+        ].position.y = -2.58 + (count - 8) / 3.4 + gravity
+        state.scene.children[2].children[0].children[0].children[2].children[
+          state.scene.children[2].children[0].children[0].children[2].children
+            .length - 3
+        ].children[0].children.forEach((box) => {
+          box.material.transparent = true
+          console.log(box.material)
+          if (box.material.opacity < 1) {
+            box.material.opacity += box.material.opacity + Math.pow(0.25, 2)
+          } else {
+            box.material.transparent = false
+          }
+        })
+        state.scene.children[2].children[0].children[0].children[2].children[
+          state.scene.children[2].children[0].children[0].children[2].children
+            .length - 2
+        ].position.y = -2.58 + (count - 7) / 3.4 + gravity * 1.5
+        state.scene.children[2].children[0].children[0].children[2].children[
+          state.scene.children[2].children[0].children[0].children[2].children
+            .length - 2
+        ].children[0].children.forEach((box) => {
+          box.material.transparent = true
+          if (box.material.opacity < 1) {
+            box.material.opacity += 0.1
+          } else {
+            box.material.transparent = false
+          }
+        })
+      } else {
+        state.scene.children[2].children[0].children[0].children[2].children[
+          state.scene.children[2].children[0].children[0].children[2].children
+            .length - 2
+        ].position.y = -2.58 + (count - 7) / 3.4 + gravity * 1.5
+        state.scene.children[2].children[0].children[0].children[2].children[
+          state.scene.children[2].children[0].children[0].children[2].children
+            .length - 2
+        ].children[0].children.forEach((box) => {
+          box.material.transparent = true
+          if (box.material.opacity < 1) {
+            box.material.opacity += 0.1
+          } else {
+            box.material.transparent = false
+          }
+        })
+      }
     }
+    // if (focus) {
+    //   ref.current.position.set(0, -(32 / 10) - 0.6, 4)
+    // state.camera.lookAt(ref.current.position)
+    // }
     // buildref.current.uniforms.uHeight.value = count
   })
 
   useEffect(() => {
-    // console.log(buildref.current)
-    focusObj(ref.current.position)
-  }, [])
+    // console.log(ref.current)
+    // focusObj(ref.current.position)
+    acc = 0
+    setGravity(1)
+  }, [count])
 
   return (
     <>
@@ -599,24 +752,7 @@ export default function Building({ count, focus, focusObj }) {
             //  debug
           >
             {box()}
-            {/* <RigidBody type='fixed'>
-            <CuboidCollider
-              args={[0.01, 7, 4.1]}
-              position={[2.411, 5, -4.05]}
-            />
-            <CuboidCollider
-              args={[0.01, 7, 4.1]}
-              position={[-2.211, 5, -4.05]}
-            />
-            <CuboidCollider args={[2.6, 7, 0.01]} position={[0, 5, 0.111]} />
-            <CuboidCollider args={[2.6, 7, 0.01]} position={[0, 5, -8.211]} />
-          </RigidBody> */}
-            {/* <RigidBody type='fixed'>
-            <mesh>
-              <boxGeometry args={[1, 10, 1]} />
-              <shaderMaterial ref={buildref} attach='material' {...data} />
-            </mesh>
-          </RigidBody> */}
+            {floor()}
             <RigidBody type='fixed'>
               <mesh
                 rotation-x={-Math.PI * 0.5}
