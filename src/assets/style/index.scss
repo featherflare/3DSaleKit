@@ -8,6 +8,10 @@ body,
   overflow: hidden;
 }
 
+canvas {
+  position: absolute;
+}
+
 .dbheaven {
   font-family: 'DBHeaven', sans-serif;
 }
@@ -50,7 +54,7 @@ body,
           background: rgba(0, 0, 0, 0.3);
           border: none;
           transition: all 0.3s;
-          color: #fff;
+          color: #ffffff;
           font-size: 1.5rem;
           &.select {
             transform: scale(1);

@@ -8,17 +8,11 @@ import b11a from '../../assets/image/roomtype/B1-1A.png'
 import c11a from '../../assets/image/roomtype/C1-1A.png'
 import d1a from '../../assets/image/roomtype/D1A.png'
 import e11a from '../../assets/image/roomtype/E1-1A.png'
-import { useEffect, useState } from 'react'
-export default function RoomType({ onClick, room, selectRoom }) {
-  const [isSelect, setIsSelect] = useState(1)
 
+export default function RoomType({ onClick, room, selectRoom }) {
   const isSelectRoom = (val) => {
     selectRoom(val)
   }
-
-  useEffect(() => {
-    setIsSelect(room + 1)
-  }, [room])
 
   const roomItem = [
     {
@@ -89,7 +83,7 @@ export default function RoomType({ onClick, room, selectRoom }) {
           </div>
           <div className='roomType'>
             {roomItem[room].roomDetail.map((item, index) => (
-              <div className='roomTypeDetail'>
+              <div className='roomTypeDetail' key={index}>
                 <img
                   className='roomIconImg'
                   src={roomItem[room].roomDetailSrc[index]}
@@ -118,10 +112,11 @@ export default function RoomType({ onClick, room, selectRoom }) {
       </div>
       <div className='roomTypeList'>
         <div
-          className={`roomTypeListDetail ${isSelect == 1 ? 'select' : ''}`}
+          className={`roomTypeListDetail ${room == 0 ? 'select' : ''}`}
           onClick={() => {
             isSelectRoom(0)
           }}
+          key='room1'
         >
           <div className='roomTypeDetailNumber'>1</div>
           <div>
@@ -130,10 +125,11 @@ export default function RoomType({ onClick, room, selectRoom }) {
           </div>
         </div>
         <div
-          className={`roomTypeListDetail ${isSelect == 2 ? 'select' : ''}`}
+          className={`roomTypeListDetail ${room == 1 ? 'select' : ''}`}
           onClick={() => {
             isSelectRoom(1)
           }}
+          key='room2'
         >
           <div className='roomTypeDetailNumber'>2</div>
           <div>
@@ -142,10 +138,11 @@ export default function RoomType({ onClick, room, selectRoom }) {
           </div>
         </div>
         <div
-          className={`roomTypeListDetail ${isSelect == 3 ? 'select' : ''}`}
+          className={`roomTypeListDetail ${room == 2 ? 'select' : ''}`}
           onClick={() => {
             isSelectRoom(2)
           }}
+          key='room3'
         >
           <div className='roomTypeDetailNumber'>3</div>
           <div>
@@ -154,10 +151,11 @@ export default function RoomType({ onClick, room, selectRoom }) {
           </div>
         </div>
         <div
-          className={`roomTypeListDetail ${isSelect == 4 ? 'select' : ''}`}
+          className={`roomTypeListDetail ${room == 3 ? 'select' : ''}`}
           onClick={() => {
             isSelectRoom(3)
           }}
+          key='room4'
         >
           <div className='roomTypeDetailNumber'>4</div>
           <div>
@@ -166,10 +164,11 @@ export default function RoomType({ onClick, room, selectRoom }) {
           </div>
         </div>
         <div
-          className={`roomTypeListDetail ${isSelect == 5 ? 'select' : ''}`}
+          className={`roomTypeListDetail ${room == 4 ? 'select' : ''}`}
           onClick={() => {
             isSelectRoom(4)
           }}
+          key='room5'
         >
           <div className='roomTypeDetailNumber'>5</div>
           <div>
