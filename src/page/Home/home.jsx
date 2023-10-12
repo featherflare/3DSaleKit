@@ -6,20 +6,21 @@ import * as THREE from 'three'
 import RoomType from '../../components/RoomType/roomtype'
 import Repeat from '../../helper/util/repeatFunc'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
-import * as TWEEN from '@tweenjs/tween.js'
+import NavBar from '../../components/Navbar/navbar'
+import ScrollFloorBar from '../../components/ScrollFloor/scrollFloorBar'
 
 export default function Home() {
   // Building Animtion Constance //
   const [obj, setObj] = useState()
   var time = 0
-  const [focus, setFocus] = useState()
+  const [isFocus, setIsFocus] = useState()
   const compassRef = useRef()
   const cameraRef = useRef()
-  const floorBtnRef = useRef()
+  const [click, setClick] = useState(0)
 
   // Floor Select Constance //
-  const [count, setCount] = useState(16)
-  const [isUP, setIsUP] = useState(true)
+  const [count, setCount] = useState(8)
+  const [floorSelect, setFloorSelect] = useState(16)
 
   // Room Select Constance //
   const [room, setRoom] = useState(0)
@@ -34,89 +35,23 @@ export default function Home() {
     setRoom(val)
   }
 
-  // Floor Select Constance //
-  const addMesh = () => {
-    time = time + 200
-    if (count < 15) {
-      setCount(count + 1)
-      setIsUP(true)
-    }
-  }
-
-  const removeMesh = () => {
-    time = time + 200
-    if (count > 8) {
-      setCount(count - 1)
-      setIsUP(false)
-    }
-  }
-
-  const selectFloor = (val) => {
-    time = time + 200
-    setCount(val)
-  }
-
-  useEffect(() => {
-    if (floorBtnRef.current) {
-      floorBtnRef.current.style.transform = `translateY( ${
-        (count - 8) * 5 - 20
-      }rem)`
-    }
-
-    if (isSelect === 5) {
-      if (count + 1 <= 15) {
-        document.getElementById(count + 1).classList.remove('unselect-1')
-        document.getElementById(count + 1).classList.remove('unselect-2')
-        document.getElementById(count + 1).classList.remove('unselect-3')
-        document.getElementById(count + 1).classList.add('unselect-1')
-      }
-      if (count + 2 <= 15) {
-        document.getElementById(count + 2).classList.remove('unselect-1')
-        document.getElementById(count + 2).classList.remove('unselect-2')
-        document.getElementById(count + 2).classList.remove('unselect-3')
-        document.getElementById(count + 2).classList.add('unselect-2')
-      }
-      if (count + 3 <= 15) {
-        document.getElementById(count + 3).classList.remove('unselect-1')
-        document.getElementById(count + 3).classList.remove('unselect-2')
-        document.getElementById(count + 3).classList.remove('unselect-3')
-        document.getElementById(count + 3).classList.add('unselect-3')
-      }
-
-      if (count - 1 >= 8) {
-        document.getElementById(count - 1).classList.remove('unselect-1')
-        document.getElementById(count - 1).classList.remove('unselect-2')
-        document.getElementById(count - 1).classList.remove('unselect-3')
-        document.getElementById(count - 1).classList.add('unselect-1')
-      }
-      if (count - 2 >= 8) {
-        document.getElementById(count - 2).classList.remove('unselect-1')
-        document.getElementById(count - 2).classList.remove('unselect-2')
-        document.getElementById(count - 2).classList.remove('unselect-3')
-        document.getElementById(count - 2).classList.add('unselect-2')
-      }
-      if (count - 3 >= 8) {
-        document.getElementById(count - 3).classList.remove('unselect-1')
-        document.getElementById(count - 3).classList.remove('unselect-2')
-        document.getElementById(count - 3).classList.remove('unselect-3')
-        document.getElementById(count - 3).classList.add('unselect-3')
-      }
-    }
-  }, [count])
-
   // Nav Select Constance //
   let item = []
 
   const onClose = () => {
     time = 0
-    setFocus(false)
+    setIsFocus()
     setRoute('')
     setIsActive(false)
-    setCount(16)
+    setFloorSelect(16)
+    setCount(8)
+    setIsSelect(0)
+    setClick(0)
   }
 
   const onChangePage = (val) => {
     if (val == 5) {
+      setRoom(0)
       setRoute('floor')
     } else if (val == 6) {
       setRoute('room')
@@ -129,32 +64,26 @@ export default function Home() {
       setIsActive(false)
     }
     if (val == 5) {
-      setFocus(true)
+      setIsFocus(false)
       setCount(8)
     } else {
-      setFocus(false)
-      setCount(16)
+      setIsFocus(false)
+      setFloorSelect(16)
+      setCount(8)
     }
     setIsSelect(val)
+    setClick(0)
     time = 0
   }
 
   const OnGoToFloorPlanOrRoomType = () => {
-    // console.log(item)
     if (route == 'floor') {
-      item.push(
-        <FloorPlan
-          key='1'
-          onClick={onClose}
-          room={room}
-          selectRoom={selectRoom}
-        />
-      )
+      item.push(<FloorPlan key='1' onClick={onClose} />)
       item.length = 1
     } else if (route == 'room') {
       item.push(
         <RoomType
-          key='2'
+          key='room'
           onClick={onClose}
           room={room}
           selectRoom={selectRoom}
@@ -182,22 +111,34 @@ export default function Home() {
       state.camera.getWorldDirection(dir)
       sph.setFromVector3(dir)
 
-      console.log(obj)
-      // timer()
       rotateCompass(sph)
       if (obj) {
-        if (focus) {
-          // state.camera.lookAt(new THREE.Vector3(obj.x, 0, obj.z))
-        } else {
-          // state.camera.lookAt(new THREE.Vector3(obj.x, 0, obj.z))
+        if (isFocus && time < 100 && click <= 1) {
+          state.camera.position.lerp(
+            new THREE.Vector3(obj.x, obj.y + 4 + count / 5, obj.z - 0.5),
+            0.2
+          )
+        } else if (isFocus && time < 100 && click > 1) {
+          state.camera.position.lerp(
+            new THREE.Vector3(obj.x, obj.y + 4 + count / 5, obj.z - 0.5),
+            1
+          )
+        } else if ((!isFocus || isFocus == null) && time < 100) {
+          if (room == 2) {
+            state.camera.position.lerp(new THREE.Vector3(9, -1, 11), 0.1)
+          } else if (room == 3) {
+            state.camera.position.lerp(new THREE.Vector3(12, 3, -6), 0.1)
+          } else {
+            state.camera.position.lerp(new THREE.Vector3(-9, 3, 9), 0.1)
+          }
         }
-        if (focus && time < 100) {
-          // state.camera.position.lerp(
-          //   new THREE.Vector3(obj.x, obj.y + 9, obj.z - 0.5),
-          //   0.2
-          // )
-        } else if (!focus && time < 100) {
-          // state.camera.position.lerp(new THREE.Vector3(-9, 0, 9), 0.1)
+      } else if ((isFocus == false || isFocus == null) && time < 100) {
+        if (room == 2) {
+          state.camera.position.lerp(new THREE.Vector3(9, -1, 11), 0.1)
+        } else if (room == 3) {
+          state.camera.position.lerp(new THREE.Vector3(12, 3, -6), 0.1)
+        } else {
+          state.camera.position.lerp(new THREE.Vector3(-9, 3, 9), 0.1)
         }
       }
     }, [])
@@ -212,13 +153,17 @@ export default function Home() {
           enablePan={false}
           enableZoom={true}
           minPolarAngle={0}
-          maxPolarAngle={Math.PI / 1.5}
+          maxPolarAngle={Math.PI / 1.6}
+          minZoom={0.1}
+          maxZoom={1}
+          minDistance={4}
+          maxDistance={15}
         />
         <PerspectiveCamera
           makeDefault
           rotation={[0, Math.PI, 0]}
           fov={75}
-          position={[-10, 3, 10]}
+          position={[-10, -3, 10]}
           near={1}
           far={1000}
           ref={cameraRef}
@@ -254,10 +199,21 @@ export default function Home() {
             <SceneCamera />
             <Building
               count={count}
-              focus={focus}
+              focus={isFocus}
+              setfocus={(f) => setIsFocus(f)}
               focusObj={(ref) => setObj(ref)}
-              setUp={(up) => setIsUP(up)}
-              isUp={isUP}
+              setcount={(count) => {
+                setCount(count + 7)
+                setFloorSelect(count + 7)
+              }}
+              route={route}
+              click={() => setClick(click + 1)}
+              room={room}
+              setroute={(route) => {
+                setRoute(route)
+              }}
+              setroom={(room) => setRoom(room)}
+              floorselect={floorSelect}
             />
           </Canvas>
           <div className='compass'>
@@ -270,211 +226,22 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {route == 'floor' ? (
-          <div className='interface'>
-            <div className='interfaceBtn'>
-              <div onClick={addMesh}>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='19'
-                  height='11'
-                  viewBox='0 0 19 11'
-                  fill='none'
-                >
-                  <path d='M0.5 10.5L9.5 1.5L18.5 10.5' stroke='black' />
-                </svg>
-              </div>
-              <div>FLOOR</div>
-              <div onClick={removeMesh}>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='19'
-                  height='11'
-                  viewBox='0 0 19 11'
-                  fill='none'
-                >
-                  <path d='M0.5 0.5L9.5 9.5L18.5 0.5' stroke='black' />
-                </svg>
-              </div>
-            </div>
-            <div className='scrollbox'>
-              <div className='interfaceFloor' ref={floorBtnRef}>
-                <button
-                  id={8}
-                  className={`btnSelectFloor ${count === 8 ? 'select' : ''}`}
-                  onClick={() => {
-                    selectFloor(8)
-                  }}
-                >
-                  8
-                </button>
-                <button
-                  id={9}
-                  className={`btnSelectFloor ${count === 9 ? 'select' : ''}`}
-                  onClick={() => {
-                    selectFloor(9)
-                  }}
-                >
-                  9
-                </button>
-                <button
-                  id={10}
-                  className={`btnSelectFloor ${count === 10 ? 'select' : ''}`}
-                  onClick={() => {
-                    selectFloor(10)
-                  }}
-                >
-                  10
-                </button>
-                <button
-                  id={11}
-                  className={`btnSelectFloor ${count === 11 ? 'select' : ''}`}
-                  onClick={() => {
-                    selectFloor(11)
-                  }}
-                >
-                  11
-                </button>
-                <button
-                  id={12}
-                  className={`btnSelectFloor ${count === 12 ? 'select' : ''}`}
-                  onClick={() => {
-                    selectFloor(12)
-                  }}
-                >
-                  12
-                </button>
-                <button
-                  id={13}
-                  className={`btnSelectFloor ${count === 13 ? 'select' : ''}`}
-                  onClick={() => {
-                    selectFloor(13)
-                  }}
-                >
-                  13
-                </button>
-                <button
-                  id={14}
-                  className={`btnSelectFloor ${count === 14 ? 'select' : ''}`}
-                  onClick={() => {
-                    selectFloor(14)
-                  }}
-                >
-                  14
-                </button>
-                <button
-                  id={15}
-                  className={`btnSelectFloor ${count === 15 ? 'select' : ''}`}
-                  onClick={() => {
-                    selectFloor(15)
-                  }}
-                >
-                  15
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <></>
-        )}
+        <ScrollFloorBar
+          count={count}
+          route={route}
+          isFocus={isFocus}
+          time={time}
+          setClick={(e) => setClick(e)}
+          setCount={(e) => setCount(e)}
+          setFloorSelect={(e) => setFloorSelect(e)}
+          floorSelect={floorSelect}
+          click={click}
+        />
         <>
           <OnGoToFloorPlanOrRoomType />
         </>
       </div>
-      <nav className='bottom-bar'>
-        <ul>
-          <li className={`${isSelect === 0 ? 'selected' : ''}`}>
-            <a
-              className='dbheaven'
-              onClick={() => {
-                onChangePage(0)
-              }}
-            >
-              HOME
-            </a>
-          </li>{' '}
-          <li className={`${isSelect === 1 ? 'selected' : ''}`}>
-            <a
-              className='dbheaven'
-              onClick={() => {
-                onChangePage(1)
-              }}
-            >
-              PROJECT DETAIL
-            </a>
-          </li>{' '}
-          <li className={`${isSelect === 2 ? 'selected' : ''}`}>
-            <a
-              className='dbheaven'
-              onClick={() => {
-                onChangePage(2)
-              }}
-            >
-              PROJECT CONCEPT
-            </a>
-          </li>{' '}
-          <li className={`${isSelect === 3 ? 'selected' : ''}`}>
-            <a
-              className='dbheaven'
-              onClick={() => {
-                onChangePage(3)
-              }}
-            >
-              LOCATION
-            </a>
-          </li>{' '}
-          <li className={`${isSelect === 4 ? 'selected' : ''}`}>
-            <a
-              className='dbheaven'
-              onClick={() => {
-                onChangePage(4)
-              }}
-            >
-              PROJECT HIGHLIGHT
-            </a>
-          </li>{' '}
-          <li className={`${isSelect === 5 ? 'selected' : ''}`}>
-            <a
-              className='dbheaven'
-              onClick={() => {
-                onChangePage(5)
-              }}
-            >
-              FLOOR PLAN
-            </a>
-          </li>{' '}
-          <li className={`${isSelect === 6 ? 'selected' : ''}`}>
-            <a
-              className='dbheaven'
-              onClick={() => {
-                onChangePage(6)
-              }}
-            >
-              ROOM TYPE
-            </a>
-          </li>{' '}
-          <li className={`${isSelect === 7 ? 'selected' : ''}`}>
-            <a
-              className='dbheaven'
-              onClick={() => {
-                onChangePage(7)
-              }}
-            >
-              GALLERY
-            </a>
-          </li>{' '}
-          <li className={`${isSelect === 8 ? 'selected' : ''}`}>
-            <a
-              className='dbheaven'
-              onClick={() => {
-                onChangePage(8)
-              }}
-            >
-              PANOROMA
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <NavBar changePage={(page) => onChangePage(page)} isSelect={isSelect} />
     </>
   )
 }
