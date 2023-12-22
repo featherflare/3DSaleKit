@@ -224,12 +224,13 @@ canvas {
 
     .floorImg {
       position: relative;
-      margin: 3rem auto;
+      margin: 2rem auto;
       img {
-        width: 35rem;
+        width: 50%;
       }
       .room {
-        height: 29rem;
+        aspect-ratio: 5/3;
+        object-fit: contain;
       }
       .floorIconMenu {
         width: 5rem;
@@ -383,7 +384,7 @@ canvas {
         color: #242424;
         &.select {
           color: #fff;
-          background: #17375e;
+          background: #6d84a3;
         }
         .roomTypeDetailNumber {
           font-size: 2.5rem;
@@ -428,6 +429,205 @@ canvas {
       a {
         font-weight: 700;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .dbheaven {
+    font-family: 'DBHeaven', sans-serif;
+    font-size: 12px;
+  }
+
+  .content {
+    height: calc(100vh - 4rem);
+
+    .section {
+      .roomtype {
+        height: calc(100% - 35px);
+        &::before {
+          height: 3.5rem;
+        }
+      }
+      .floorplan {
+        &::before {
+          height: 3.5rem;
+        }
+      }
+
+      .header1 {
+        font-size: 1.5rem;
+      }
+
+      .header2 {
+        font-size: 1rem;
+      }
+
+      .floorImg {
+        img {
+          width: 50%;
+        }
+        .floorIconMenu {
+          width: 3.5rem;
+          height: 4rem;
+          right: 15%;
+          font-size: 10px;
+          .floorIconImg {
+            width: 1rem;
+            padding: 8px;
+          }
+
+          &.second {
+            top: 5rem;
+          }
+        }
+
+        .roomIconMenu {
+          width: 3.5rem;
+          height: 4rem;
+          right: 15%;
+          font-size: 10px;
+          .roomIconImg {
+            width: 1rem;
+            padding: 8px;
+          }
+
+          &.second {
+            top: 5rem;
+          }
+        }
+
+        .floorType {
+          width: 50%;
+          row-gap: 0.5rem;
+          div {
+            &::before {
+              content: '';
+              width: 8px;
+              height: 8px;
+              margin-right: 10px;
+            }
+          }
+        }
+        .roomType {
+          gap: 2rem;
+          row-gap: 1rem;
+          font-size: 0.75rem;
+          .roomTypeDetail {
+            .roomIconImg {
+              width: 12px;
+            }
+          }
+        }
+      }
+
+      .floorBack {
+        position: absolute;
+        bottom: 1rem;
+        left: 1rem;
+        padding: 12px 30px;
+        font-size: 10px;
+        gap: 6px;
+
+        svg {
+          height: 10px;
+        }
+      }
+
+      .roomTypeList {
+        .roomTypeListDetail {
+          gap: 0.75rem;
+          .roomTypeDetailNumber {
+            font-size: 1.5rem;
+          }
+          .roomTypeDetailName {
+            font-size: 10px;
+          }
+          .roomTypeDetailSize {
+            font-size: 8px;
+          }
+        }
+      }
+    }
+  }
+
+  .bottom-bar {
+    height: 4rem;
+    ul {
+      gap: 2%;
+    }
+  }
+}
+
+@media screen and (max-width: 840px) {
+  .dbheaven {
+    font-family: 'DBHeaven', sans-serif;
+    font-size: 10px;
+  }
+
+  .content {
+    height: calc(100vh - 4rem);
+
+    .section {
+      .roomtype {
+        height: calc(100% - 29px);
+      }
+
+      .floorImg {
+        margin: 2rem auto;
+        .floorIconMenu {
+          right: 10%;
+        }
+
+        .roomIconMenu {
+          right: 10%;
+        }
+
+        .floorType {
+          width: 60%;
+          div {
+            font-size: 10px;
+          }
+        }
+
+        .roomType {
+          width: 80%;
+          gap: 1.25rem;
+          row-gap: 1rem;
+          font-size: 0.65rem;
+          .roomTypeDetail {
+            .roomIconImg {
+              width: 12px;
+            }
+          }
+        }
+      }
+
+      .floorBack {
+        bottom: 0.75rem;
+      }
+
+      .roomTypeList {
+        .roomTypeListDetail {
+          gap: 0.5rem;
+          .roomTypeDetailNumber {
+            font-size: 1rem;
+          }
+          .roomTypeDetailName {
+            font-size: 8px;
+          }
+          .roomTypeDetailSize {
+            font-size: 8px;
+          }
+        }
+      }
+    }
+  }
+
+  .bottom-bar {
+    height: 4rem;
+    ul {
+      gap: 2%;
     }
   }
 }

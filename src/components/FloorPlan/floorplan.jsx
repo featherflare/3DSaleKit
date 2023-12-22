@@ -1,12 +1,12 @@
 import Panorama from '../../assets/image/panoramaView.svg'
 import Simulate from '../../assets/image/simulateLight.svg'
 import Floorplan from '../../assets/image/floorplan.png'
-export default function FloorPlan({ onClick }) {
+export default function FloorPlan({ onClick, count }) {
   return (
     <>
       <div className='floorplan' id='floor'>
         <div className='textheight dbheaven header1'>RESIDENTIAL AREA</div>
-        <div className='textheight dbheaven header2'>7TH FLOOR</div>
+        <div className='textheight dbheaven header2'>{count}TH FLOOR</div>
         <div className='floorImg'>
           <img src={Floorplan} alt='Floor Plan'></img>
           <div className='floorIconMenu'>

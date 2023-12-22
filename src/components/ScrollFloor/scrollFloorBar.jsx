@@ -5,7 +5,7 @@ export default function ScrollFloorBar({
   route,
   isFocus,
   time,
-  setClick,
+  setclick,
   setCount,
   setFloorSelect,
   floorSelect,
@@ -17,26 +17,33 @@ export default function ScrollFloorBar({
   const addMesh = () => {
     time = time + 200
     if (count < 15) {
-      setClick(click + 1)
+      console.log('in')
       // setFocus(true)
       setCount(count + 1)
-      if (isFocus) setFloorSelect(floorSelect - 1)
+      setclick(click + 1)
+      if (isFocus) {
+        setFloorSelect(floorSelect - 1)
+      }
     }
   }
 
   const removeMesh = () => {
     time = time + 200
     if (count > 8) {
-      setClick(click + 1)
       // setFocus(true)
       setCount(count - 1)
-      if (isFocus) setFloorSelect(floorSelect - 1)
+      setclick(click + 1)
+      if (isFocus) {
+        setFloorSelect(floorSelect - 1)
+      }
     }
   }
 
   const selectFloor = (val) => {
-    setClick(click + 1)
-    if (isFocus) setFloorSelect(val)
+    setclick(click + 1)
+    if (isFocus) {
+      setFloorSelect(val)
+    }
     // setFocus(true)
     time = time + 200
     setCount(val)

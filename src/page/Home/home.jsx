@@ -16,14 +16,17 @@ export default function Home() {
   const [isFocus, setIsFocus] = useState()
   const compassRef = useRef()
   const cameraRef = useRef()
+  const orbRef = useRef()
   const [click, setClick] = useState(0)
+  const [isZoom, setIsZoom] = useState(1)
+  const [cameraPosition, setCameraPosition] = useState([-20, 3, 20])
 
   // Floor Select Constance //
   const [count, setCount] = useState(8)
   const [floorSelect, setFloorSelect] = useState(16)
 
   // Room Select Constance //
-  const [room, setRoom] = useState(0)
+  const [room, setRoom] = useState()
 
   // Nav Select Constance //
   const [route, setRoute] = useState('')
@@ -47,28 +50,34 @@ export default function Home() {
     setCount(8)
     setIsSelect(0)
     setClick(0)
+    setRoom()
   }
 
   const onChangePage = (val) => {
     if (val == 5) {
-      setRoom(0)
+      setRoom()
       setRoute('floor')
     } else if (val == 6) {
       setRoute('room')
+      setRoom(0)
     } else {
       setRoute('')
+      setRoom()
     }
     if (val == 5 || val == 6) {
       setIsActive(true)
+      setIsFocus(false)
+      setIsZoom(1.5)
     } else {
       setIsActive(false)
+      setIsZoom(1.0)
     }
     if (val == 5) {
-      setIsFocus(false)
+      setFloorSelect(16)
       setCount(8)
     } else {
-      setIsFocus(false)
       setFloorSelect(16)
+      setIsFocus()
       setCount(8)
     }
     setIsSelect(val)
@@ -76,9 +85,24 @@ export default function Home() {
     time = 0
   }
 
+  // Function to animate the camera position
+  const animateCamera = () => {
+    if (cameraRef.current) {
+      cameraRef.current.position.set(
+        cameraPosition[0],
+        cameraPosition[1],
+        cameraPosition[2]
+      )
+    }
+  }
+
+  useEffect(() => {
+    animateCamera()
+  }, [cameraPosition])
+
   const OnGoToFloorPlanOrRoomType = () => {
     if (route == 'floor') {
-      item.push(<FloorPlan key='1' onClick={onClose} />)
+      item.push(<FloorPlan key='1' onClick={onClose} count={count} />)
       item.length = 1
     } else if (route == 'room') {
       item.push(
@@ -102,7 +126,6 @@ export default function Home() {
     )
   }
 
-  // Building Animtion Section //
   function SceneCamera() {
     useFrame((state) => {
       time = time > 100 ? 101 : time + 1
@@ -112,61 +135,87 @@ export default function Home() {
       sph.setFromVector3(dir)
 
       rotateCompass(sph)
-      if (obj) {
-        if (isFocus && time < 100 && click <= 1) {
+      // console.log(click)
+
+      if (isFocus && time < 100 && click <= 1) {
+        state.camera.position.lerp(
+          new THREE.Vector3(-5 / isZoom, 4 / isZoom, 5 / isZoom),
+          0.2
+        )
+      } else if (isFocus && time < 100 && click > 1) {
+        state.camera.position.lerp(
+          new THREE.Vector3(-5 / isZoom, 4 / isZoom, 5 / isZoom),
+          1
+        )
+      } else if ((!isFocus || isFocus == null) && time < 40) {
+        if (room == 1) {
           state.camera.position.lerp(
-            new THREE.Vector3(obj.x, obj.y + 4 + count / 5, obj.z - 0.5),
-            0.2
+            { x: -14 / isZoom, y: 3 / isZoom, z: -4 / isZoom },
+            0.06
           )
-        } else if (isFocus && time < 100 && click > 1) {
+          state.camera.lookAt(0, 0, 0)
+        } else if (room == 3) {
           state.camera.position.lerp(
-            new THREE.Vector3(obj.x, obj.y + 4 + count / 5, obj.z - 0.5),
+            { x: 9 / isZoom, y: 3 / isZoom, z: 9 / isZoom },
+            0.06
+          )
+          state.camera.lookAt(0, 0, 0)
+        } else if (room == 2 || room == 4) {
+          state.camera.position.lerp(
+            { x: -9 / isZoom, y: 3 / isZoom, z: 10 / isZoom },
+            0.06
+          )
+          state.camera.lookAt(0, 0, 0)
+        } else if (room == 0) {
+          state.camera.position.lerp(
+            { x: -10 / isZoom, y: 3 / isZoom, z: 10 / isZoom },
+            0.06
+          )
+          state.camera.lookAt(0, 0, 0)
+        } else if (room == null && click <= 0) {
+          state.camera.position.lerp(
+            { x: -10 / isZoom, y: 3 / isZoom, z: 10 / isZoom },
+            0.06
+          )
+          state.camera.lookAt(0, 0, 0)
+        } else if (room == null && click > 0) {
+          state.camera.position.lerp(
+            { x: -10 / isZoom, y: 3 / isZoom, z: 10 / isZoom },
             1
           )
-        } else if ((!isFocus || isFocus == null) && time < 100) {
-          if (room == 2) {
-            state.camera.position.lerp(new THREE.Vector3(9, -1, 11), 0.1)
-          } else if (room == 3) {
-            state.camera.position.lerp(new THREE.Vector3(12, 3, -6), 0.1)
-          } else {
-            state.camera.position.lerp(new THREE.Vector3(-9, 3, 9), 0.1)
-          }
-        }
-      } else if ((isFocus == false || isFocus == null) && time < 100) {
-        if (room == 2) {
-          state.camera.position.lerp(new THREE.Vector3(9, -1, 11), 0.1)
-        } else if (room == 3) {
-          state.camera.position.lerp(new THREE.Vector3(12, 3, -6), 0.1)
-        } else {
-          state.camera.position.lerp(new THREE.Vector3(-9, 3, 9), 0.1)
+          state.camera.lookAt(0, 0, 0)
         }
       }
+
+      cameraRef.current.position.copy(state.camera.position)
+      state.camera.updateProjectionMatrix()
+      return null
     }, [])
 
     return (
       <>
         <OrbitControls
-          makeDefault
+          // makeDefault
           enableDamping={true}
           dampingFactor={0.05}
           rotateSpeed={0.5}
           enablePan={false}
           enableZoom={true}
           minPolarAngle={0}
-          maxPolarAngle={Math.PI / 1.6}
+          maxPolarAngle={Math.PI / 1.64}
           minZoom={0.1}
           maxZoom={1}
           minDistance={4}
           maxDistance={15}
+          ref={orbRef}
         />
         <PerspectiveCamera
           makeDefault
-          rotation={[0, Math.PI, 0]}
           fov={75}
-          position={[-10, -3, 10]}
           near={1}
           far={1000}
           ref={cameraRef}
+          position={[-11.5, 3, 11.5]}
         />
       </>
     )
@@ -194,6 +243,14 @@ export default function Home() {
               antialias: true,
               toneMapping: THREE.ACESFilmicToneMapping,
               outputEncoding: THREE.sRGBEncoding,
+              logarithmicDepthBuffer: true,
+            }}
+            onDragEnd={() => {
+              setCameraPosition([
+                cameraRef.current.position.x,
+                cameraRef.current.position.y,
+                cameraRef.current.position.z,
+              ])
             }}
           >
             <SceneCamera />
@@ -201,7 +258,6 @@ export default function Home() {
               count={count}
               focus={isFocus}
               setfocus={(f) => setIsFocus(f)}
-              focusObj={(ref) => setObj(ref)}
               setcount={(count) => {
                 setCount(count + 7)
                 setFloorSelect(count + 7)
@@ -231,7 +287,7 @@ export default function Home() {
           route={route}
           isFocus={isFocus}
           time={time}
-          setClick={(e) => setClick(e)}
+          setclick={(e) => setClick(e)}
           setCount={(e) => setCount(e)}
           setFloorSelect={(e) => setFloorSelect(e)}
           floorSelect={floorSelect}
